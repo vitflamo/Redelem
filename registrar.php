@@ -13,8 +13,7 @@ db::query ('INSERT INTO contas
 VALUES (\'\', Conta_apelido, Conta_senha, Conta_email)',
 array ('apelido' => $apelido , 
 'senha' => $senha,
-'email'=> $email ),
-echo "Sucesso!";
+'email'=> $email )
 );
 
 
