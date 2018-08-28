@@ -4,13 +4,7 @@ class db{
 
     private static function connect(){
 
-        $pdo = new PDO(
-            'mysql:host=mysql942.umbler.com;
-            dbname=redelem;
-            charset=utf-8', 
-            'mari',
-            'Nomoretears11'
-        );
+        $pdo = new PDO('mysql:host=mysql942.umbler.com;dbname=redelem;charset=utf-8', 'mari','Nomoretears11');
 
         $pdo->setAttribute(
             PDO::ATTR_ERRMODE, 
