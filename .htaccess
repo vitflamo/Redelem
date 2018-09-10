@@ -1,4 +1,6 @@
 RewriteEngine on
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://www.redelem.com.br/ [R,L]
 
 # Rewrite /foo/bar to /foo/bar.php
 RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
@@ -8,4 +10,5 @@ RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"
 RewriteRule .* - [L,R=404]
 
 # NOTE! FOR APACHE ON WINDOWS: Add [NC] to RewriteCond like this:
+
 # RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$" [NC]

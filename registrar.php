@@ -2,22 +2,37 @@
 
 include('classes/db.php');
 
-//Monta
 if (isset($_POST[registra])){
 
     $apelido = $_POST['apelido'];
     $senha = $_POST['senha'];
     $email = $_POST['email'];
 
-    if (!db::query('SELECT conta_apelido FROM conta WHERE conta_apelido=:apelido', array(':apelido'=>$apelido))){
+    if (!db::query('SELECT conta_apelido FROM conta WHERE conta_apelido=:apelido', 
+    array(':apelido'=>$apelido))){
         
         if(strlen($apelido) <= 32 ){
 
             if (preg_match('/[a-zA0Z0-9_]+/', $apelido)){ 
 
                 if(strlen($senha) >= 4 && strlen($senha) <= 16){
-                    db::query('INSERT INTO conta VALUES (null, :apelido, :senha, :email)', array(':apelido'=>$apelido , ':senha'=>password_hash($senha, PASSWORD_BCRYPT),':email'=>$email));
-                    echo "<br>Cadastro realizado com Sucesso!<br>";
+                    
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)){
+
+                        if(!db::query('SELECT conta_email FROM conta WHERE conta_email=:email', 
+                        array(':email'=>$email))){
+                            
+                            db::query('INSERT INTO conta VALUES (null, :apelido, :senha, :email)', 
+                            array(':apelido'=>$apelido , ':senha'=>password_hash($senha, PASSWORD_BCRYPT),':email'=>$email));
+        
+                            echo "<br>Cadastro realizado com Sucesso!<br>";
+                        }else{
+                            echo "<br>Email já está em uso<br>";
+                        }
+                    }else{
+                        echo "<br>Email inválido<br>";
+                    }
+                   
                     
                 }else{
                     echo "<br>Senha fora do padrão<br>";
@@ -38,15 +53,17 @@ if (isset($_POST[registra])){
 
 ?>
 
+<br><br>
 <a href=index>Início</a><br>
-<a href=entrar>Entrar</a>
+<a href=entrar>Entrar</a><br>
+<a href=sair>Sair</a>
 
 <h1> Registre-se</h1>
 
 <form action="registrar" method="post">
-<input type="text" name="apelido" placeholder="Insira aqui seu apelido" required/><br><br>
-<input type="password" name="senha" placeholder="Insira aqui sua senha" required /><br><br>
-<input type="email" name="email" placeholder="Insira aqui seu e-mail" required /><br><br>
+    <input type="text" name="apelido" placeholder="Insira aqui seu apelido" required/><br><br>
+    <input type="password" name="senha" placeholder="Insira aqui sua senha" required /><br><br>
+    <input type="email" name="email" placeholder="Insira aqui seu e-mail" required /><br><br>
 
-<input type="submit" name="registra" value="registrar">
+    <input type="submit" name="registra" value="registrar">
 </form>
